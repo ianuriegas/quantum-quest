@@ -3,19 +3,18 @@ using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
-    public Camera mainCamera;
-    public Text scoreText;
+    public Camera mainCamera; // Drag your Main Camera here
+    public Text scoreText;    // Drag your UI Text here
 
     private float initialYPosition;
     private float maxScore;
-    private bool scoreChanged = true;
 
     private void Start()
     {
         if (mainCamera != null)
         {
             initialYPosition = mainCamera.transform.position.y;
-            maxScore = 0;
+            maxScore = 0; // Initial score
         }
     }
 
@@ -23,26 +22,17 @@ public class ScoreManager : MonoBehaviour
     {
         if (mainCamera != null)
         {
+            // Calculate the score based on how much the camera has moved upwards
             float currentScore = mainCamera.transform.position.y - initialYPosition;
 
-            // Dirty Flag HERE
+            // Update maxScore if the current score is higher
             if (currentScore > maxScore)
             {
                 maxScore = currentScore;
-                scoreChanged = true; // Update score when a new max score is reached
             }
 
-            if (currentScore < maxScore && scoreChanged)
-            {
-                scoreChanged = false; // Reset flag if camera moves down
-            }
-
-            // Update the UI Text with the max score if changed
-            if (scoreChanged)
-            {
-                scoreText.text = "Score: " + Mathf.FloorToInt(maxScore).ToString();
-                scoreChanged = false; // Reset the flag after updating the score
-            }
+            // Update the UI Text with the max score
+            scoreText.text = "Score: " + Mathf.FloorToInt(maxScore).ToString();
         }
     }
 }
